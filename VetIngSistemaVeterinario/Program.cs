@@ -35,6 +35,15 @@ else
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+// seeder de identity
+using (var scope = app.Services.CreateScope()) // Creamos un scope manual para acceder a los servicios
+{
+    var services = scope.ServiceProvider;
+
+    // Llamamos al seeder para que cree roles y el usuario admin si no existen
+    await IdentitySeeder.SeedRolesAndAdminAsync(services);
+}
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
